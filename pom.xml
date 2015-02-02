@@ -4,11 +4,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.nishi</groupId>
+    <groupId>com.nishionline</groupId>
     <artifactId>OSGiPOC</artifactId>
     <version>0.1.0</version>
+    <packaging>pom</packaging>
     <description>A POC for OSGi container.</description>
     <url>http://nishi-inc.github.io/OSGiPOC/</url>
+
+    <modules>
+        <module>genealogy-core</module>
+        <module>genealogy-api</module>
+    </modules>
+
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -29,6 +36,18 @@
         </developer>
     </developers>
 
+    <properties>
+        <java.version>1.8</java.version>
+        <felix.version>1.4.0</felix.version>
+
+        <junit.version>4.12</junit.version>
+        <commons.version>3.2.1</commons.version>
+        <lombok.version>1.12.2</lombok.version>
+
+        <maven.compiler.plugin.version>3.2</maven.compiler.plugin.version>
+        <maven.bundle.plugin.version>2.5.3</maven.bundle.plugin.version>
+    </properties>
+
     <build>
         <directory>bin</directory>
         <outputDirectory>bin/classes</outputDirectory>
@@ -42,10 +61,30 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.1</version>
+                    <version>${maven.compiler.plugin.version}</version>
                     <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <version>${maven-bundle-plugin.version}</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <instructions>
+                            <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+                            <Bundle-Version>${project.version}</Bundle-Version>
+                            <Bundle-Vendor>Nishi Online</Bundle-Vendor>
+                            <Export-Package></Export-Package>
+                            <Private-Package></Private-Package>
+                            <Import-Package>*</Import-Package>
+                            <Embed-Dependency>org.projectlombok.lombok;scope=compile|runtime;inline=false</Embed-Dependency>
+                            <Embed-Transitive>true</Embed-Transitive>
+                            <Embed-StripGroup>true</Embed-StripGroup>
+                        </instructions>
                     </configuration>
                 </plugin>
             </plugins>
@@ -58,7 +97,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -66,21 +105,22 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.2.1</version>
+            <version>${commons.version}</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.12.2</version>
+            <version>${lombok.version}</version>
             <scope>compile</scope>
         </dependency>
         
         <dependency>
-          <groupId>org.apache.felix</groupId>
-          <artifactId>org.osgi.core</artifactId>
-          <version>1.4.0</version>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.osgi.core</artifactId>
+            <version>${felix.version}</version>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>
